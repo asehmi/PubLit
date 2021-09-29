@@ -144,6 +144,8 @@ def year_journal(pdf):
                 hover_name = "Year", log_x=True, size_max=60, title= "Yearly trends")
     return fig
 
+
+# Creating the network map
 def plot_connection(pdf):
     
     authors = pdf["FAU"].dropna()
@@ -162,7 +164,7 @@ def plot_connection(pdf):
         df_graph, source="From", target="To", edge_attr="Count"
     )
     
-    # Limit to TOP 50 authors
+    # Limit to TOP 50 authors (needs fix)
     authors_flat = [author for authors in list(pubdf["FAU"].dropna())for author in authors]
     top50authors = pd.DataFrame.from_records(
         Counter(authors_flat).most_common(50), columns=["Name", "Count"]
@@ -184,14 +186,14 @@ def plot_connection(pdf):
     pv_static(g)
     return g,top50authors
 
+
 def load_lottieurl(url: str):
     r = requests.get(url)
     if r.status_code != 200:
         return None
     return r.json()
 
-# Schloarly
-
+# Schloarly Implementation (need to work on!)
 def author_information(name):
     search_query = scholarly.search_author(name)
     author = scholarly.fill(next(search_query))
@@ -366,4 +368,14 @@ else:
         url = "https://assets1.lottiefiles.com/packages/lf20_OT15QW.json"
         lottie_json = load_lottieurl(url)
         st_lottie(lottie_json,height =250,width =250)
+
+end_cont = st.sidebar.container()
+with end_cont:
+    '''
+    I'm Avra ! *Thanks for visiting my simple app, I'd love feedback on this,*
+    *so if you want to reach out or support me, you can find me on - * &nbsp[![Follow](https://img.shields.io/twitter/follow/Avra_b?style=social)](https://www.twitter.com/Avra_b)
+    [![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee--yellow.svg?logo=buy-me-a-coffee&logoColor=orange&style=social)](https://www.buymeacoffee.com/AvraCodes) 
+
+    '''
+    st.markdown("<br>", unsafe_allow_html=True)
 
