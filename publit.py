@@ -28,11 +28,7 @@ def get_pub(val,keyword):
     ids = result["IdList"]
     batch_size = 100
     batches = [ids[x: x + 100] for x in range(0, len(ids), batch_size)]   
-    record_titles = []
-    pub_date = []
     record_list = []
-    author_list = []
-    pmid = []
     for batch in stqdm(batches):
         handle = Entrez.efetch(db = "pubmed", id = batch, rettype = "medline", retmode = "text")
         records = Medline.parse(handle)
@@ -115,23 +111,26 @@ def plot_top_journals(pdf):
 
 # Associated Keywords with the search
 def top_keyworkds(pdf):
-    flat_kw = [
-            _.lower()
-            for kws in list(pdf["OT"].dropna())
-            for kw in kws
-            for _ in kw.split(" ")
-            ] 
-    top10kw = pd.DataFrame.from_records(
-            Counter(flat_kw).most_common(10), columns=["Keyword", "Count"]
-            )
-    fig = px.histogram(
-                    data_frame = top10kw,
-                    x = "Count", y = "Keyword",
-                    title = "Top Keywords related to the articles",
-                    color = "Keyword",
-                    color_discrete_sequence = px.colors.qualitative.Pastel2,
-                                              
-                )         
+    if 'OT' in pdf:
+        flat_kw = [
+                _.lower()
+                for kws in list(pdf["OT"].dropna())
+                for kw in kws
+                for _ in kw.split(" ")
+                ] 
+        top10kw = pd.DataFrame.from_records(
+                Counter(flat_kw).most_common(10), columns=["Keyword", "Count"]
+                )
+        fig = px.histogram(
+                        data_frame = top10kw,
+                        x = "Count", y = "Keyword",
+                        title = "Top Keywords related to the articles",
+                        color = "Keyword",
+                        color_discrete_sequence = px.colors.qualitative.Pastel2,
+                                                
+                    )  
+    else:
+        fig = "Keywords Plot Unavailable"       
     return fig
 
 # Journal Yearly Trends
@@ -360,7 +359,11 @@ if keyword :
                         st.plotly_chart(fig)
                         st.plotly_chart(fig4)          
                         st.plotly_chart(fig2)
-                        st.plotly_chart(fig3)                
+                        try:
+                            st.plotly_chart(fig3) 
+                        except:
+                            st.error('Keywords Stats Unavailable')
+                                       
     else:
         st.error("Sorry!Your keyword(s) doesn't contain related publications.")
         url = "https://assets8.lottiefiles.com/temp/lf20_ZGnXlB.json"

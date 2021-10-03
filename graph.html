@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Authors Network</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 900px;
+            height: 600px;
+            background-color: #222222;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"font": {"color": "white"}, "id": "Doran, Nick J", "label": "Doran, Nick J", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Ferreira, Filipe", "label": "Ferreira, Filipe", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Gaur, Chandra B", "label": "Gaur, Chandra B", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Gordienko, Vladimir", "label": "Gordienko, Vladimir", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Ribeiro, Vitor", "label": "Ribeiro, Vitor", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Szabo, Aron D", "label": "Szabo, Aron D", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Feng, Cheng", "label": "Feng, Cheng", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Iribas, Haritz", "label": "Iribas, Haritz", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Marinelarena, Jon", "label": "Marinelarena, Jon", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Loayssa, Alayn", "label": "Loayssa, Alayn", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Schneider, Thomas", "label": "Schneider, Thomas", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Urricelqui, Javier", "label": "Urricelqui, Javier", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Lee, Jong Hyun", "label": "Lee, Jong Hyun", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Lee, Han Hyub", "label": "Lee, Han Hyub", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Lee, Sang Soo", "label": "Lee, Sang Soo", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Li, Zonglei", "label": "Li, Zonglei", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Liu, Can", "label": "Liu, Can", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Yan, Lianshan", "label": "Yan, Lianshan", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Luo, Bin", "label": "Luo, Bin", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Pan, Wei", "label": "Pan, Wei", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Zhang, Xinpu", "label": "Zhang, Xinpu", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Zhou, Yin", "label": "Zhou, Yin", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Yamada, Makoto", "label": "Yamada, Makoto", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "white"}, "id": "Ono, Hirotaka", "label": "Ono, Hirotaka", "publications": 1, "shape": "dot", "size": 15}]);
+        edges = new vis.DataSet([{"Count": 1, "from": "Doran, Nick J", "to": "Ferreira, Filipe", "weight": 3}, {"Count": 1, "from": "Doran, Nick J", "to": "Gaur, Chandra B", "weight": 3}, {"Count": 1, "from": "Doran, Nick J", "to": "Gordienko, Vladimir", "weight": 3}, {"Count": 1, "from": "Doran, Nick J", "to": "Ribeiro, Vitor", "weight": 3}, {"Count": 1, "from": "Doran, Nick J", "to": "Szabo, Aron D", "weight": 3}, {"Count": 1, "from": "Ferreira, Filipe", "to": "Gaur, Chandra B", "weight": 3}, {"Count": 1, "from": "Ferreira, Filipe", "to": "Gordienko, Vladimir", "weight": 3}, {"Count": 1, "from": "Ferreira, Filipe", "to": "Ribeiro, Vitor", "weight": 3}, {"Count": 1, "from": "Ferreira, Filipe", "to": "Szabo, Aron D", "weight": 3}, {"Count": 1, "from": "Gaur, Chandra B", "to": "Gordienko, Vladimir", "weight": 3}, {"Count": 1, "from": "Gaur, Chandra B", "to": "Ribeiro, Vitor", "weight": 3}, {"Count": 1, "from": "Gaur, Chandra B", "to": "Szabo, Aron D", "weight": 3}, {"Count": 1, "from": "Gordienko, Vladimir", "to": "Ribeiro, Vitor", "weight": 3}, {"Count": 1, "from": "Gordienko, Vladimir", "to": "Szabo, Aron D", "weight": 3}, {"Count": 1, "from": "Ribeiro, Vitor", "to": "Szabo, Aron D", "weight": 3}, {"Count": 1, "from": "Feng, Cheng", "to": "Iribas, Haritz", "weight": 3}, {"Count": 1, "from": "Feng, Cheng", "to": "Marinelarena, Jon", "weight": 3}, {"Count": 1, "from": "Feng, Cheng", "to": "Loayssa, Alayn", "weight": 3}, {"Count": 1, "from": "Feng, Cheng", "to": "Schneider, Thomas", "weight": 3}, {"Count": 1, "from": "Feng, Cheng", "to": "Urricelqui, Javier", "weight": 3}, {"Count": 1, "from": "Iribas, Haritz", "to": "Loayssa, Alayn", "weight": 3}, {"Count": 1, "from": "Iribas, Haritz", "to": "Marinelarena, Jon", "weight": 3}, {"Count": 1, "from": "Iribas, Haritz", "to": "Schneider, Thomas", "weight": 3}, {"Count": 1, "from": "Iribas, Haritz", "to": "Urricelqui, Javier", "weight": 3}, {"Count": 1, "from": "Marinelarena, Jon", "to": "Loayssa, Alayn", "weight": 3}, {"Count": 1, "from": "Marinelarena, Jon", "to": "Schneider, Thomas", "weight": 3}, {"Count": 1, "from": "Marinelarena, Jon", "to": "Urricelqui, Javier", "weight": 3}, {"Count": 1, "from": "Lee, Jong Hyun", "to": "Lee, Han Hyub", "weight": 3}, {"Count": 1, "from": "Lee, Jong Hyun", "to": "Lee, Sang Soo", "weight": 3}, {"Count": 1, "from": "Lee, Han Hyub", "to": "Lee, Sang Soo", "weight": 3}, {"Count": 1, "from": "Li, Zonglei", "to": "Liu, Can", "weight": 3}, {"Count": 1, "from": "Li, Zonglei", "to": "Yan, Lianshan", "weight": 3}, {"Count": 1, "from": "Li, Zonglei", "to": "Luo, Bin", "weight": 3}, {"Count": 1, "from": "Li, Zonglei", "to": "Pan, Wei", "weight": 3}, {"Count": 1, "from": "Li, Zonglei", "to": "Zhang, Xinpu", "weight": 3}, {"Count": 1, "from": "Li, Zonglei", "to": "Zhou, Yin", "weight": 3}, {"Count": 1, "from": "Liu, Can", "to": "Luo, Bin", "weight": 3}, {"Count": 1, "from": "Liu, Can", "to": "Pan, Wei", "weight": 3}, {"Count": 1, "from": "Liu, Can", "to": "Yan, Lianshan", "weight": 3}, {"Count": 1, "from": "Liu, Can", "to": "Zhang, Xinpu", "weight": 3}, {"Count": 1, "from": "Liu, Can", "to": "Zhou, Yin", "weight": 3}, {"Count": 1, "from": "Yan, Lianshan", "to": "Luo, Bin", "weight": 3}, {"Count": 1, "from": "Yan, Lianshan", "to": "Pan, Wei", "weight": 3}, {"Count": 1, "from": "Yan, Lianshan", "to": "Zhang, Xinpu", "weight": 3}, {"Count": 1, "from": "Yan, Lianshan", "to": "Zhou, Yin", "weight": 3}, {"Count": 1, "from": "Loayssa, Alayn", "to": "Schneider, Thomas", "weight": 3}, {"Count": 1, "from": "Loayssa, Alayn", "to": "Urricelqui, Javier", "weight": 3}, {"Count": 1, "from": "Schneider, Thomas", "to": "Urricelqui, Javier", "weight": 3}, {"Count": 1, "from": "Luo, Bin", "to": "Pan, Wei", "weight": 3}, {"Count": 1, "from": "Luo, Bin", "to": "Zhang, Xinpu", "weight": 3}, {"Count": 1, "from": "Luo, Bin", "to": "Zhou, Yin", "weight": 3}, {"Count": 1, "from": "Pan, Wei", "to": "Zhang, Xinpu", "weight": 3}, {"Count": 1, "from": "Pan, Wei", "to": "Zhou, Yin", "weight": 3}, {"Count": 1, "from": "Zhang, Xinpu", "to": "Zhou, Yin", "weight": 3}, {"Count": 1, "from": "Yamada, Makoto", "to": "Ono, Hirotaka", "weight": 3}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
