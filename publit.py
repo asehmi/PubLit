@@ -145,8 +145,7 @@ def year_journal(pdf):
 
 
 # Creating the network map
-def plot_connection(pdf):
-    
+def plot_connection(pdf):    
     authors = pdf["FAU"].dropna()
     author_connections = list(
         map(lambda x: list(combinations(x[::-1], 2)), authors)
@@ -157,34 +156,25 @@ def plot_connection(pdf):
     df = pd.DataFrame(flat_connections, columns=["From", "To"])
     df_graph = df.groupby(["From", "To"]).size().reset_index()
     df_graph.columns = ["From", "To", "Count"]
-
-
     G = nx.from_pandas_edgelist(
         df_graph, source="From", target="To", edge_attr="Count"
-    )
-    
+    )   
     # Limit to TOP 50 authors (needs fix)
     authors_flat = [author for authors in list(pubdf["FAU"].dropna())for author in authors]
     top50authors = pd.DataFrame.from_records(
         Counter(authors_flat).most_common(50), columns=["Name", "Count"]
     )
-
     top50_nodes = (n for n in list(G.nodes()) if n in list(top50authors["Name"]))
-
     G_50 = G.subgraph(top50_nodes)
-
     for n in G_50.nodes():
         G_50.nodes[n]["publications"] = int(
             top50authors[top50authors["Name"] == n]["Count"]
         )
-
     g = net.Network(height='600px', width='900px',heading='Authors Network',font_color='white',bgcolor='#222222',notebook = True)
     #bgcolor='#222222'
     g.from_nx(G_50,default_node_size= 15,default_edge_weight=3)
-   
     pv_static(g)
     return g,top50authors
-
 
 def load_lottieurl(url: str):
     r = requests.get(url)
