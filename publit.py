@@ -370,9 +370,9 @@ if database_choice == "PubMed":
             lottie_json = load_lottieurl(url)
             st_lottie(lottie_json,height =250,width =250)
 elif database_choice == "arXiv":
-    st.write("Database search not implemented yet!")
+    st.info("Database search not implemented yet!")
 else:
-    st.write("Database search not implemented yet!")    
+    st.info("Database search not implemented yet!")    
 
 # For all Databases, when empty throw waiting cat lottie
 end_cont = st.sidebar.container()
