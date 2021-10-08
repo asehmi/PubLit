@@ -246,7 +246,8 @@ with st_cont:
 Entrez.email = "A.N.Other@example.com"
 st.sidebar.write("Search scientific publications based on keywords.")
 # Separate based on Databases
-database_choice = st.sidebar.radio(label = "Database ?",options=["PubMed","arXiv","bioRxiv"])
+st.sidebar.markdown("### Database ?")
+database_choice = st.sidebar.radio(label = "",options=["PubMed","arXiv","bioRxiv"])
 if database_choice == "PubMed":
     st.sidebar.subheader("Search your queries below")
     keyword = st.sidebar.text_input("For Example : Chlorophyll f ")
