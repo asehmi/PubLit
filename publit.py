@@ -248,7 +248,7 @@ st.sidebar.write("Search scientific publications based on keywords.")
 # Separate based on Databases
 st.sidebar.markdown("### Database ?")
 database_choice = st.sidebar.radio(
-                label = "👉🏽 Select database based your field of choice to get the best search results",
+                label = "💬 Relevant database for best results",
                 options=["PubMed","arXiv","bioRxiv"])
 if database_choice == "PubMed":
     st.sidebar.subheader("Search your queries below")
