@@ -378,7 +378,7 @@ else:
     st.info("Database search not implemented yet!")    
 
 # For all Databases, when empty throw waiting cat lottie
-st.sidebar.markdown("### Hi, there!")
+#st.sidebar.markdown("### Hi, there!")
 end_cont = st.sidebar.container()
 with end_cont:  
     '''
