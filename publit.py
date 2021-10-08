@@ -248,7 +248,7 @@ st.sidebar.write("Search scientific publications based on keywords.")
 # Separate based on Databases
 col1, col2 = st.columns([1,2])
 with col2:
-        database_choice = st.sidebar.radio(
+        database_choice = st.radio(
                     label = "💬 Select relevant database for best results",
                     options=["PubMed","arXiv","bioRxiv"])
 
