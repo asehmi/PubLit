@@ -253,11 +253,11 @@ with col2:
                 label = "💬 Select relevant database for best results",
                 options=["PubMed","arXiv","bioRxiv"])
 
-with col1:
-        d_url = "https://assets2.lottiefiles.com/private_files/lf30_zipzttsv.json"
-        lottie_url_d = d_url
-        lottie_json_d = load_lottieurl(lottie_url_d)
-        st_lottie(lottie_json_d,height =150,width =200)
+# with col1:
+#         d_url = "https://assets2.lottiefiles.com/private_files/lf30_zipzttsv.json"
+#         lottie_url_d = d_url
+#         lottie_json_d = load_lottieurl(lottie_url_d)
+#         st_lottie(lottie_json_d,height =150,width =200)
 
 
 if database_choice == "PubMed":
