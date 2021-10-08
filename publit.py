@@ -228,7 +228,7 @@ Thanks to the Streamlit Community for amazing [`Streamlit components`](https://d
 - [`Network analysis to quickly get insight into an academic field with python`](https://towardsdatascience.com/network-analysis-to-quickly-get-insight-into-an-academic-field-with-python-cd891717d547)
 - [`Streamlit-AgGrid usage`](https://towardsdatascience.com/7-reasons-why-you-should-use-the-streamlit-aggrid-component-2d9a2b6e32f0)
 
-Note : The App is still under devlelopment.
+*Note : The App is still under devlelopment.*
 
 '''
 menu_items = {'About': about_info}
