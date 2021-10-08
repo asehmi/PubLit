@@ -97,12 +97,12 @@ def plot_top_authors(pubdf):
 
 # Top Journals with the key words
 def plot_top_journals(pdf):
-    top10journals = pd.DataFrame.from_records(
+    # By default 10 journals are choosen , Need fix
+    top_journals = pd.DataFrame.from_records(
             Counter(pdf["TA"]).most_common(10),
             columns=["Journal", "Count"],
         )   
-
-    fig = px.pie(data_frame = top10journals,
+    fig = px.pie(data_frame = top_journals,
                  names = "Journal", 
                  values = "Count", 
                  title = "Top Journals",
@@ -118,23 +118,24 @@ def top_keyworkds(pdf):
                 for kw in kws
                 for _ in kw.split(" ")
                 ] 
-        top10kw = pd.DataFrame.from_records(
+        # Top 10 Keywords are choosen - may be user implementation req        
+        top_keys = pd.DataFrame.from_records(
                 Counter(flat_kw).most_common(10), columns=["Keyword", "Count"]
                 )
         fig = px.histogram(
-                        data_frame = top10kw,
+                        data_frame = top_keys,
                         x = "Count", y = "Keyword",
                         title = "Top Keywords related to the articles",
                         color = "Keyword",
-                        color_discrete_sequence = px.colors.qualitative.Pastel2,
-                                                
-                    )  
+                        color_discrete_sequence = px.colors.qualitative.Pastel2,                                                
+                    )
+    # Quick bug fix, Not okay                  
     else:
         fig = "Keywords Plot Unavailable"       
     return fig
 
 # Journal Yearly Trends
-def year_journal(pdf):
+def year_journal_trend(pdf):
     yearly = pd.DataFrame(pdf["Year"].value_counts().reset_index())
     yearly.columns = ["Year", "Count"]
     fig = px.scatter(yearly, x="Year", y="Count",
@@ -345,7 +346,7 @@ if keyword :
                         fig = plot_top_authors(pubdf)
                         fig2 = plot_top_journals(pubdf)
                         fig3 = top_keyworkds(pubdf)
-                        fig4 = year_journal(pubdf)
+                        fig4 = year_journal_trend(pubdf)
                         st.plotly_chart(fig)
                         st.plotly_chart(fig4)          
                         st.plotly_chart(fig2)
