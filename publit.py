@@ -254,8 +254,8 @@ with col2:
 
 with col1:
         d_url = "https://lottiefiles.com/75244-analyse"
-        lottie_url = url
-        lottie_json = load_lottieurl(lottie_url)
+        lottie_url_d = d_url
+        lottie_json = load_lottieurl(lottie_url_d)
         st_lottie(lottie_json,height =150,width =200)
 
 
