@@ -380,6 +380,7 @@ else:
 # For all Databases, when empty throw waiting cat lottie
 end_cont = st.sidebar.container()
 with end_cont:
+    st.sidebar.markdown("### Hi, there!")
     '''
     I'm Avra ! *Thanks for visiting my simple app, I'd love feedback on this,*
     *so if you want to reach out or support me, you can find me on - * &nbsp[![Follow](https://img.shields.io/twitter/follow/Avra_b?style=social)](https://www.twitter.com/Avra_b)
