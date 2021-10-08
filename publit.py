@@ -373,9 +373,14 @@ if database_choice == "PubMed":
             lottie_json = load_lottieurl(url)
             st_lottie(lottie_json,height =250,width =250)
 elif database_choice == "arXiv":
-    st.info("Database search not implemented yet!")
+
+    st.info("arXiv database search not implemented yet!")
+    st.sidebar.subheader("Search your queries below")
+    keyword = st.sidebar.text_input("For Example : Quantum")
 else:
-    st.info("Database search not implemented yet!")    
+    st.info("bioRxiv database search not implemented yet!")
+    st.sidebar.subheader("Search your queries below")
+    keyword = st.sidebar.text_input("For Example : CRISPAR CAS9")  
 
 # For all Databases, when empty throw waiting cat lottie
 #st.sidebar.markdown("### Hi, there!")
