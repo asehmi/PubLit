@@ -246,10 +246,18 @@ with st_cont:
 Entrez.email = "A.N.Other@example.com"
 st.sidebar.write("Search scientific publications based on keywords.")
 # Separate based on Databases
-st.sidebar.markdown("### Database ?")
-database_choice = st.sidebar.radio(
-                label = "💬 Select relevant database for best results",
-                options=["PubMed","arXiv","bioRxiv"])
+col1, col2 = st.columns([1,2])
+with col2:
+        database_choice = st.sidebar.radio(
+                    label = "💬 Select relevant database for best results",
+                    options=["PubMed","arXiv","bioRxiv"])
+
+with col1:
+        d_url = "https://lottiefiles.com/75244-analyse"
+        lottie_url = url
+        lottie_json = load_lottieurl(lottie_url)
+
+
 if database_choice == "PubMed":
     st.sidebar.subheader("Search your queries below")
     keyword = st.sidebar.text_input("For Example : Chlorophyll f ")
