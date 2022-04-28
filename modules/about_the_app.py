@@ -1,3 +1,4 @@
+import streamlit as st
 def text_about(): 
     about_info = ''' # Scientific Literatures and Analytics 
     Search using specific keyword and obtain relevant informations
@@ -33,3 +34,12 @@ def text_about():
 
     '''
     return about_info 
+
+def foot_note():
+    
+    note = '''
+    *I'm Avra ! Thanks for visiting my simple app, I'd love feedback on this,
+    so if you want to reach out or support me, you can find me here*[![Follow](https://img.shields.io/twitter/follow/Avra_b?style=social)](https://www.twitter.com/Avra_b)
+    [![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee--yellow.svg?logo=buy-me-a-coffee&logoColor=orange&style=social)](https://www.buymeacoffee.com/AvraCodes) 
+    '''
+    return note 

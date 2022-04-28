@@ -4,12 +4,16 @@ from streamlit_lottie import st_lottie
 import json
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
-
 # Custom functions implementation
-from publit import about_the_app,custom_funx,plot_utils,database_bio,database_scholarly
+from modules import (
+    about_the_app,            
+    custom_funx,
+    plot_utils,
+    database_bio,
+    database_scholarly
+)
 
 # Main App 
-
 about_info = about_the_app.text_about()
 menu_items = {'About': about_info}
 st.set_page_config(layout="wide",menu_items=menu_items,page_title = "SciLit 📑")
@@ -33,7 +37,7 @@ if database_choice == "PubMed":
     if keyword :    
         with st.spinner("Searching query {}....".format(keyword)):
             # Obtain the maximum publications
-            max_pub = plot_utils.avail_pub(keyword) 
+            max_pub = database_bio.avail_pub(keyword) 
             # Default Serach Quantity Choosen from app
             if round(int(max_pub)/2) > 50:
                 nSearchQuant = 50
@@ -69,7 +73,7 @@ if database_choice == "PubMed":
                     data = csv,
                     file_name = keyword+'.csv',
                     mime ='text/csv',
-                )
+                ) 
 
                 if sel:
                     exp = st.expander("More information on seleted article(s).")
@@ -78,7 +82,7 @@ if database_choice == "PubMed":
                         nID = len(sel)
                         for x in range(nID):
                             ids.append(sel[x]["PubchemID"])       
-                        match_df = pubdf[pubdf['PMID'].isin(ids)]               
+                        match_df = pubdf[pubdf['PMID'].isin(ids)]   # Get the matching rows           
                         nl = len(match_df)                        
                         Title = match_df["TI"].to_list()
                         Abstract = match_df["AB"].to_list()
@@ -103,9 +107,8 @@ if database_choice == "PubMed":
                 with st.container():
                     _exp = st.expander(label = 'Authors Network')
                     with _exp:
-                        g,names = database_bio.plot_connection(pubdf)
-                        choice = st.selectbox("Get Author's Details (Note:may not work in all case!)",list(names["Name"]))
-                        
+                        g,names = plot_utils.plot_connection(pubdf)
+                        choice = st.selectbox("Get Author's Details (Note:may not work in all case!)",list(names["Name"]))                        
                         disp = st.button("Display")
                         if disp:
                             try:
@@ -117,21 +120,21 @@ if database_choice == "PubMed":
                                 url = "https://assets8.lottiefiles.com/packages/lf20_cwGCWK.json"
                                 lottie_json = custom_funx.load_lottieurl(url)
                                 st_lottie(lottie_json,height =250,width =250)
-                    _exp_plots = st.expander(label = 'Plots  ',expanded = True)
-                    with _exp_plots:
-                        container_plots = st.container()
-                        with container_plots:
-                            fig = plot_utils.plot_top_authors(pubdf)
-                            fig2 = plot_utils.plot_top_journals(pubdf)
-                            fig3 = plot_utils.top_keyworkds(pubdf)
-                            fig4 = plot_utils.year_journal_trend(pubdf)
-                            st.plotly_chart(fig)
-                            st.plotly_chart(fig4)          
-                            st.plotly_chart(fig2)
-                            try:
-                                st.plotly_chart(fig3) 
-                            except:
-                                st.error('Keywords Stats Unavailable')
+                _exp_plots = st.expander(label = 'Plots  ',expanded = True)
+                with _exp_plots:
+                    container_plots = st.container()
+                    with container_plots:
+                        fig = plot_utils.plot_top_authors(pubdf)
+                        fig2 = plot_utils.plot_top_journals(pubdf)
+                        fig3 = plot_utils.top_keyworkds(pubdf)
+                        fig4 = plot_utils.year_journal_trend(pubdf)
+                        st.plotly_chart(fig)
+                        st.plotly_chart(fig4)          
+                        st.plotly_chart(fig2)
+                        try:
+                            st.plotly_chart(fig3) 
+                        except:
+                            st.error('Keywords Stats Unavailable')
                                         
         else:
             st.error("Sorry!Your keyword(s) doesn't contain related publications.")
@@ -158,10 +161,6 @@ else:
 #st.sidebar.markdown("### Hi, there!")
 end_cont = st.sidebar.container()
 with end_cont:  
-    '''
-    I'm Avra ! *Thanks for visiting my simple app, I'd love feedback on this,*
-    *so if you want to reach out or support me, you can find me on - * &nbsp[![Follow](https://img.shields.io/twitter/follow/Avra_b?style=social)](https://www.twitter.com/Avra_b)
-    [![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee--yellow.svg?logo=buy-me-a-coffee&logoColor=orange&style=social)](https://www.buymeacoffee.com/AvraCodes) 
-    '''
-    st.markdown("<br>", unsafe_allow_html=True)
+    footer = about_the_app.foot_note()
+    st.markdown(footer, unsafe_allow_html=True)
 
