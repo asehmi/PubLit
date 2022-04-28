@@ -6,20 +6,15 @@ import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
 # Custom functions implementation
-from publit.about_the_app import *
-from publit.custom_funx import load_lottieurl,convert_df
-from publit.database_bio import *
-from publit.plot_utils import *
-from publit.database_scholarly import author_information
-
+from publit import about_the_app,custom_funx,plot_utils,database_bio,database_scholarly
 
 # Main App 
 
-about_info = text_about()
+about_info = about_the_app.text_about()
 menu_items = {'About': about_info}
 st.set_page_config(layout="wide",menu_items=menu_items,page_title = "SciLit 📑")
 lottie_url = "https://assets2.lottiefiles.com/temp/lf20_TOE9MF.json"
-lottie_json = load_lottieurl(lottie_url)
+lottie_json = custom_funx.load_lottieurl(lottie_url)
 st_cont = st.sidebar.container()
 st.sidebar.title("📖 SciLit ")
 with st_cont:
@@ -38,7 +33,7 @@ if database_choice == "PubMed":
     if keyword :    
         with st.spinner("Searching query {}....".format(keyword)):
             # Obtain the maximum publications
-            max_pub = avail_pub(keyword) 
+            max_pub = plot_utils.avail_pub(keyword) 
             # Default Serach Quantity Choosen from app
             if round(int(max_pub)/2) > 50:
                 nSearchQuant = 50
@@ -56,19 +51,19 @@ if database_choice == "PubMed":
                     _cont_tab = st.expander("Publications",expanded = True)
                     
                     with _cont_tab:
-                        pubdf , df = get_pub(val,keyword)            
-                        res,sel = grid_table(df)
+                        pubdf , df = database_bio.get_pub(val,keyword)            
+                        res,sel = plot_utils.grid_table(df)
                     with fc2:
                     #url = "https://assets8.lottiefiles.com/packages/lf20_XhrXqc.json"
                         url = "https://assets1.lottiefiles.com/packages/lf20_2sNufo.json"
-                        lottie_json = load_lottieurl(url)
+                        lottie_json = custom_funx.load_lottieurl(url)
                         st_lottie(lottie_json,height =100,width =200)
                     with fc1:
                         st.header(keyword)   
                     with fc1:
                         st.text("Search Results ✔️")
                 
-                csv = convert_df(df)
+                csv = custom_funx.convert_df(df)
                 st.download_button(
                     label ="Download Table 📋",
                     data = csv,
@@ -108,28 +103,28 @@ if database_choice == "PubMed":
                 with st.container():
                     _exp = st.expander(label = 'Authors Network')
                     with _exp:
-                        g,names = plot_connection(pubdf)
+                        g,names = database_bio.plot_connection(pubdf)
                         choice = st.selectbox("Get Author's Details (Note:may not work in all case!)",list(names["Name"]))
                         
                         disp = st.button("Display")
                         if disp:
                             try:
-                                auth = author_information(choice)
+                                auth = database_scholarly.author_information(choice)
                                 st.write(auth)
                             except:
                                 st.error("Sorry, not found!")
                                 #url = "https://assets1.lottiefiles.com/packages/lf20_OT15QW.json"
                                 url = "https://assets8.lottiefiles.com/packages/lf20_cwGCWK.json"
-                                lottie_json = load_lottieurl(url)
+                                lottie_json = custom_funx.load_lottieurl(url)
                                 st_lottie(lottie_json,height =250,width =250)
                     _exp_plots = st.expander(label = 'Plots  ',expanded = True)
                     with _exp_plots:
                         container_plots = st.container()
                         with container_plots:
-                            fig = plot_top_authors(pubdf)
-                            fig2 = plot_top_journals(pubdf)
-                            fig3 = top_keyworkds(pubdf)
-                            fig4 = year_journal_trend(pubdf)
+                            fig = plot_utils.plot_top_authors(pubdf)
+                            fig2 = plot_utils.plot_top_journals(pubdf)
+                            fig3 = plot_utils.top_keyworkds(pubdf)
+                            fig4 = plot_utils.year_journal_trend(pubdf)
                             st.plotly_chart(fig)
                             st.plotly_chart(fig4)          
                             st.plotly_chart(fig2)
@@ -141,13 +136,13 @@ if database_choice == "PubMed":
         else:
             st.error("Sorry!Your keyword(s) doesn't contain related publications.")
             url = "https://assets8.lottiefiles.com/temp/lf20_ZGnXlB.json"
-            lottie_json = load_lottieurl(url)
+            lottie_json = custom_funx.load_lottieurl(url)
             st_lottie(lottie_json,height =150,width =200)
     else:
         w_cont = st.sidebar.container()
         with w_cont:
             url = "https://assets1.lottiefiles.com/packages/lf20_OT15QW.json"
-            lottie_json = load_lottieurl(url)
+            lottie_json = custom_funx.load_lottieurl(url)
             st_lottie(lottie_json,height =250,width =250)
 elif database_choice == "arXiv":
 
