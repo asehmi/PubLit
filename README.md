@@ -1,7 +1,7 @@
 # PubLit
 Publit provides you to search for scientific publictions with specific keywords and obtain useful anlaytics related to the :
 - authors
-- journals, 
+- journals 
 - author's network  
 - yearly trends and many more
 
