@@ -13,7 +13,7 @@ PubLit currently uses, [PubMed](https://pubmed.ncbi.nlm.nih.gov/) database to se
 
 ## Future plans?
 Well, I have recieved a couple of insightful comments and feedbacks which I would love to work on during my spare time. For example, polishing the UI, plots, using semantischolar API or making the code a bit more universal for different databases.
->(Special mention to Nikolay Karelin for his valuable feedbacks. Thank you!!)
+>(Special mention to [Nikolay Karelin](https://twitter.com/nick_karelin) for his valuable feedbacks. Thank you!!)
 
 Therefore, the future immediate plan is to integrate and take advantage of more such public databases, for example, [arXiv](https://arxiv.org/help/api/index) or [bioRxiv](https://api.biorxiv.org/), as a result making the application available for science-enthusiast from various backgrounds.
 
