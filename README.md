@@ -1,9 +1,11 @@
 # PubLit
-Publit provides you to search for scientific publictions with specific keywords and obtain useful anlaytics related to the :
-- authors
-- journals 
+With Publit search for scientific publictions with specific keywords and obtain useful anlaytics gets easier.What analytics it offers -
+- authors details
+- journals related
 - author's network  
 - yearly trends and many more
+
+*In future release, you can opt for specific datbase which suits your keywords.*
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/avratanubiswas/publit/main/publit.py)
 
