@@ -5,7 +5,7 @@ With PubLit, search for scientific publictions with specific keywords and obtain
 - journals related informations
 - author's network  
 - yearly trends and many more
-
+![PubLit demo](https://github.com/AvratanuBiswas/PubLit/blob/main/publit_demo.gif)
 *In future release, you can opt for specific datbase which suits your keywords.*
 
 ## How it works ?
