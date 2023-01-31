@@ -1,5 +1,5 @@
-streamlit_lottie==0.0.2
-streamlit==1.8.1
+streamlit_lottie
+streamlit
 numpy==1.21.0
 stvis==0.0.1
 scholarly==1.4.0
