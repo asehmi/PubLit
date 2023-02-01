@@ -11,4 +11,4 @@ pyvis==0.1.9
 pandas
 Bio==1.3.8
 stqdm==0.0.4
-openai
+openai==0.26.1
