@@ -15,26 +15,35 @@ from numpy import empty
 # Ag-Grid Implementation
 def grid_table(df):
     gb = GridOptionsBuilder.from_dataframe(df)
-    gb.configure_pagination(enabled=True)
+
+    # gb.configure_pagination(enabled=True, 
+    #                         paginationAutoPageSize=True, 
+    #                         paginationPageSize=5)
     gb.configure_side_bar()
-    gb.configure_selection('multiple', use_checkbox=True, groupSelectsChildren=True, groupSelectsFiltered=True)
-    gb.configure_default_column(groupable=True, value=True, enableRowGroup=True, editable=True)
+    gb.configure_selection('single', use_checkbox=True)
+    gb.configure_default_column(groupable=True, 
+                                value = True, 
+                                enableRowGroup=True, 
+                                editable= True,
+                                tooltipField = 'Title'
+                                )
+    gb.configure_pagination(True,paginationPageSize = 5)
     gridOptions = gb.build()
     grid_response = AgGrid(df, 
                 gridOptions = gridOptions, 
-                enable_enterprise_modules = True,
-                fit_columns_on_grid_load = False,
-                width='100%',
-                theme = "dark",
+                # enable_enterprise_modules = True,
+                width = 500, height= 400,
+                theme = "balham",
                 update_mode = GridUpdateMode.SELECTION_CHANGED,
-                allow_unsafe_jscode=True)
+                )
     df = grid_response['data']
     selected_rows = grid_response["selected_rows"]
     return df,selected_rows
 
 # Top Authors
 def plot_top_authors(pubdf):      
-    n_author = st.sidebar.slider(label = "Contributing Authors", min_value = 0, max_value = 100, value = 5)
+    # n_author = st.sidebar.slider(label = "Contributing Authors", min_value = 0, max_value = 100, value = 5)
+    n_author = 10
     authors_flat = [author for authors in list(pubdf["FAU"].dropna())for author in authors]
     top10authors = pd.DataFrame.from_records(
                 Counter(authors_flat).most_common(n_author), columns=["Name", "Count"]
@@ -44,9 +53,10 @@ def plot_top_authors(pubdf):
                     x = "Name", y = "Count",
                     title = "Top {} Contributing authors".format(n_author),
                     color = "Name",
-                    color_discrete_sequence = px.colors.qualitative.Pastel2,    
+                    # color_discrete_sequence = px.colors.qualitative.Pastel2,    
                                            
-                )    
+                )  
+    # fig = st.bar_chart(data = top10authors,x = "Name", y = "Count",)  
     return fig 
 
 # Top Journals with the key words
@@ -57,10 +67,11 @@ def plot_top_journals(pdf):
             columns=["Journal", "Count"],
         )   
     fig = px.pie(data_frame = top_journals,
-                 names = "Journal", 
-                 values = "Count", 
-                 title = "Top Journals",
-                 color_discrete_sequence = px.colors.qualitative.Pastel2)
+                names = "Journal", 
+                values = "Count", 
+                title = "Top Journals",
+                #  color_discrete_sequence = px.colors.qualitative.Pastel2
+                )
     return fig
 
 # Associated Keywords with the search
@@ -81,7 +92,7 @@ def top_keyworkds(pdf):
                         x = "Count", y = "Keyword",
                         title = "Top Keywords related to the articles",
                         color = "Keyword",
-                        color_discrete_sequence = px.colors.qualitative.Pastel2,                                                
+                        # color_discrete_sequence = px.colors.qualitative.Pastel2,                                                
                     )
     # Quick bug fix, Not okay                  
     else:
@@ -94,7 +105,7 @@ def year_journal_trend(pdf):
     yearly.columns = ["Year", "Count"]
     fig = px.scatter(yearly, x="Year", y="Count",
 	            size="Count", color="Year",
-                color_discrete_sequence = px.colors.qualitative.Pastel2,
+                # color_discrete_sequence = px.colors.qualitative.Pastel2,
                 hover_name = "Year", log_x=True, size_max=60, title= "Yearly trends")
     return fig
 
@@ -120,7 +131,8 @@ def plot_connection(pdf):
     g = net.Network(
         height='600px', width='900px',
         heading='Authors Network',
-        font_color='white',bgcolor='#222222',
+        font_color='black',
+        # bgcolor='#222222',
         notebook = False
         )
     #bgcolor='#222222'

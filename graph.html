@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Authors Network</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 900px;
+            height: 600px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"font": {"color": "black"}, "id": "Ulrich, Nikea J", "label": "Ulrich, Nikea J", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Kanesaki, Yu", "label": "Kanesaki, Yu", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Miller, Scott R", "label": "Miller, Scott R", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Miyake, Keita", "label": "Miyake, Keita", "publications": 3, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Fushimi, Keiji", "label": "Fushimi, Keiji", "publications": 4, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Ikeuchi, Masahiko", "label": "Ikeuchi, Masahiko", "publications": 5, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Kashimoto, Tomonori", "label": "Kashimoto, Tomonori", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Kimura, Hiroyuki", "label": "Kimura, Hiroyuki", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Maeda, Kaisei", "label": "Maeda, Kaisei", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Narikawa, Rei", "label": "Narikawa, Rei", "publications": 6, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Ni-Ni-Win", "label": "Ni-Ni-Win", "publications": 4, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Li, Yaqiong", "label": "Li, Yaqiong", "publications": 3, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Blankenship, Robert E", "label": "Blankenship, Robert E", "publications": 5, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Chen, Min", "label": "Chen, Min", "publications": 7, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Li, Zheng-Ke", "label": "Li, Zheng-Ke", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Yin, Yan-Chao", "label": "Yin, Yan-Chao", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Zhang, Zhong-Chun", "label": "Zhang, Zhong-Chun", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Qiu, Bao-Sheng", "label": "Qiu, Bao-Sheng", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Gan, Fei", "label": "Gan, Fei", "publications": 4, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Bryant, Donald A", "label": "Bryant, Donald A", "publications": 9, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Zhao, Chi", "label": "Zhao, Chi", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Shen, Gaozhong", "label": "Shen, Gaozhong", "publications": 5, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Yamakawa, Hisanori", "label": "Yamakawa, Hisanori", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Fujita, Yuichi", "label": "Fujita, Yuichi", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Itoh, Shigeru", "label": "Itoh, Shigeru", "publications": 5, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Tsuzuki, Yuki", "label": "Tsuzuki, Yuki", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Yamamoto, Haruki", "label": "Yamamoto, Haruki", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Cherepanov, Dmitry A", "label": "Cherepanov, Dmitry A", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Mamedov, Mahir D", "label": "Mamedov, Mahir D", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Petrova, Anastasia A", "label": "Petrova, Anastasia A", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Vishnevskaya, Anna I", "label": "Vishnevskaya, Anna I", "publications": 1, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Canniffe, Daniel P", "label": "Canniffe, Daniel P", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Golbeck, John H", "label": "Golbeck, John H", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Ho, Ming-Yang", "label": "Ho, Ming-Yang", "publications": 4, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Kurashov, Vasily", "label": "Kurashov, Vasily", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Hamaguchi, Tasuku", "label": "Hamaguchi, Tasuku", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Ifuku, Kentaro", "label": "Ifuku, Kentaro", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Inoue-Kashino, Natsuko", "label": "Inoue-Kashino, Natsuko", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Kashino, Yasuhiro", "label": "Kashino, Yasuhiro", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Kawakami, Keisuke", "label": "Kawakami, Keisuke", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Shinzawa-Itoh, Kyoko", "label": "Shinzawa-Itoh, Kyoko", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Yamashita, Eiki", "label": "Yamashita, Eiki", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Yonekura, Koji", "label": "Yonekura, Koji", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Brudvig, Gary W", "label": "Brudvig, Gary W", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Gisriel, Christopher J", "label": "Gisriel, Christopher J", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Aono, Yuki", "label": "Aono, Yuki", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Nakajima, Takahiro", "label": "Nakajima, Takahiro", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Sato, Moritoshi", "label": "Sato, Moritoshi", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Wolf, Benjamin M", "label": "Wolf, Benjamin M", "publications": 2, "shape": "dot", "size": 15}, {"font": {"color": "black"}, "id": "Willows, Robert D", "label": "Willows, Robert D", "publications": 2, "shape": "dot", "size": 15}]);
+        edges = new vis.DataSet([{"Count": 1, "from": "Ulrich, Nikea J", "to": "Kanesaki, Yu", "weight": 1}, {"Count": 1, "from": "Ulrich, Nikea J", "to": "Miller, Scott R", "weight": 1}, {"Count": 1, "from": "Miyake, Keita", "to": "Fushimi, Keiji", "weight": 1}, {"Count": 2, "from": "Miyake, Keita", "to": "Ikeuchi, Masahiko", "weight": 1}, {"Count": 1, "from": "Miyake, Keita", "to": "Kanesaki, Yu", "weight": 1}, {"Count": 1, "from": "Miyake, Keita", "to": "Kashimoto, Tomonori", "weight": 1}, {"Count": 2, "from": "Miyake, Keita", "to": "Kimura, Hiroyuki", "weight": 1}, {"Count": 2, "from": "Miyake, Keita", "to": "Maeda, Kaisei", "weight": 1}, {"Count": 3, "from": "Miyake, Keita", "to": "Narikawa, Rei", "weight": 1}, {"Count": 1, "from": "Miyake, Keita", "to": "Ni-Ni-Win", "weight": 1}, {"Count": 1, "from": "Li, Yaqiong", "to": "Blankenship, Robert E", "weight": 1}, {"Count": 3, "from": "Li, Yaqiong", "to": "Chen, Min", "weight": 1}, {"Count": 1, "from": "Li, Yaqiong", "to": "Li, Zheng-Ke", "weight": 1}, {"Count": 1, "from": "Li, Yaqiong", "to": "Yin, Yan-Chao", "weight": 1}, {"Count": 1, "from": "Li, Yaqiong", "to": "Zhang, Zhong-Chun", "weight": 1}, {"Count": 1, "from": "Li, Yaqiong", "to": "Qiu, Bao-Sheng", "weight": 1}, {"Count": 4, "from": "Gan, Fei", "to": "Bryant, Donald A", "weight": 1}, {"Count": 2, "from": "Gan, Fei", "to": "Zhao, Chi", "weight": 1}, {"Count": 2, "from": "Gan, Fei", "to": "Shen, Gaozhong", "weight": 1}, {"Count": 2, "from": "Yamakawa, Hisanori", "to": "Fujita, Yuichi", "weight": 1}, {"Count": 2, "from": "Yamakawa, Hisanori", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 2, "from": "Yamakawa, Hisanori", "to": "Tsuzuki, Yuki", "weight": 1}, {"Count": 1, "from": "Yamakawa, Hisanori", "to": "Yamamoto, Haruki", "weight": 1}, {"Count": 1, "from": "Cherepanov, Dmitry A", "to": "Mamedov, Mahir D", "weight": 1}, {"Count": 1, "from": "Cherepanov, Dmitry A", "to": "Petrova, Anastasia A", "weight": 1}, {"Count": 1, "from": "Cherepanov, Dmitry A", "to": "Vishnevskaya, Anna I", "weight": 1}, {"Count": 2, "from": "Zhao, Chi", "to": "Bryant, Donald A", "weight": 1}, {"Count": 2, "from": "Zhao, Chi", "to": "Shen, Gaozhong", "weight": 1}, {"Count": 1, "from": "Canniffe, Daniel P", "to": "Bryant, Donald A", "weight": 1}, {"Count": 1, "from": "Canniffe, Daniel P", "to": "Shen, Gaozhong", "weight": 1}, {"Count": 1, "from": "Canniffe, Daniel P", "to": "Golbeck, John H", "weight": 1}, {"Count": 1, "from": "Canniffe, Daniel P", "to": "Ho, Ming-Yang", "weight": 1}, {"Count": 1, "from": "Canniffe, Daniel P", "to": "Kurashov, Vasily", "weight": 1}, {"Count": 2, "from": "Hamaguchi, Tasuku", "to": "Ifuku, Kentaro", "weight": 1}, {"Count": 2, "from": "Hamaguchi, Tasuku", "to": "Inoue-Kashino, Natsuko", "weight": 1}, {"Count": 2, "from": "Hamaguchi, Tasuku", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 2, "from": "Hamaguchi, Tasuku", "to": "Kashino, Yasuhiro", "weight": 1}, {"Count": 2, "from": "Hamaguchi, Tasuku", "to": "Kawakami, Keisuke", "weight": 1}, {"Count": 2, "from": "Hamaguchi, Tasuku", "to": "Shinzawa-Itoh, Kyoko", "weight": 1}, {"Count": 2, "from": "Hamaguchi, Tasuku", "to": "Yamashita, Eiki", "weight": 1}, {"Count": 2, "from": "Hamaguchi, Tasuku", "to": "Yonekura, Koji", "weight": 1}, {"Count": 1, "from": "Mamedov, Mahir D", "to": "Petrova, Anastasia A", "weight": 1}, {"Count": 1, "from": "Mamedov, Mahir D", "to": "Vishnevskaya, Anna I", "weight": 1}, {"Count": 2, "from": "Kawakami, Keisuke", "to": "Ifuku, Kentaro", "weight": 1}, {"Count": 2, "from": "Kawakami, Keisuke", "to": "Inoue-Kashino, Natsuko", "weight": 1}, {"Count": 2, "from": "Kawakami, Keisuke", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 2, "from": "Kawakami, Keisuke", "to": "Kashino, Yasuhiro", "weight": 1}, {"Count": 1, "from": "Kawakami, Keisuke", "to": "Yonekura, Koji", "weight": 1}, {"Count": 2, "from": "Kawakami, Keisuke", "to": "Shinzawa-Itoh, Kyoko", "weight": 1}, {"Count": 2, "from": "Kawakami, Keisuke", "to": "Yamashita, Eiki", "weight": 1}, {"Count": 2, "from": "Kashimoto, Tomonori", "to": "Ikeuchi, Masahiko", "weight": 1}, {"Count": 1, "from": "Kashimoto, Tomonori", "to": "Kanesaki, Yu", "weight": 1}, {"Count": 1, "from": "Kashimoto, Tomonori", "to": "Fushimi, Keiji", "weight": 1}, {"Count": 1, "from": "Kashimoto, Tomonori", "to": "Kimura, Hiroyuki", "weight": 1}, {"Count": 2, "from": "Kashimoto, Tomonori", "to": "Maeda, Kaisei", "weight": 1}, {"Count": 2, "from": "Kashimoto, Tomonori", "to": "Narikawa, Rei", "weight": 1}, {"Count": 1, "from": "Kashimoto, Tomonori", "to": "Ni-Ni-Win", "weight": 1}, {"Count": 1, "from": "Kimura, Hiroyuki", "to": "Ikeuchi, Masahiko", "weight": 1}, {"Count": 1, "from": "Kimura, Hiroyuki", "to": "Fushimi, Keiji", "weight": 1}, {"Count": 1, "from": "Kimura, Hiroyuki", "to": "Maeda, Kaisei", "weight": 1}, {"Count": 1, "from": "Kimura, Hiroyuki", "to": "Ni-Ni-Win", "weight": 1}, {"Count": 2, "from": "Kimura, Hiroyuki", "to": "Narikawa, Rei", "weight": 1}, {"Count": 1, "from": "Kashino, Yasuhiro", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 2, "from": "Kashino, Yasuhiro", "to": "Ifuku, Kentaro", "weight": 1}, {"Count": 2, "from": "Kashino, Yasuhiro", "to": "Inoue-Kashino, Natsuko", "weight": 1}, {"Count": 2, "from": "Kashino, Yasuhiro", "to": "Shinzawa-Itoh, Kyoko", "weight": 1}, {"Count": 2, "from": "Kashino, Yasuhiro", "to": "Yamashita, Eiki", "weight": 1}, {"Count": 2, "from": "Kashino, Yasuhiro", "to": "Yonekura, Koji", "weight": 1}, {"Count": 1, "from": "Bryant, Donald A", "to": "Brudvig, Gary W", "weight": 1}, {"Count": 2, "from": "Bryant, Donald A", "to": "Gisriel, Christopher J", "weight": 1}, {"Count": 2, "from": "Bryant, Donald A", "to": "Golbeck, John H", "weight": 1}, {"Count": 1, "from": "Bryant, Donald A", "to": "Ho, Ming-Yang", "weight": 1}, {"Count": 2, "from": "Bryant, Donald A", "to": "Kurashov, Vasily", "weight": 1}, {"Count": 1, "from": "Bryant, Donald A", "to": "Shen, Gaozhong", "weight": 1}, {"Count": 2, "from": "Ikeuchi, Masahiko", "to": "Aono, Yuki", "weight": 1}, {"Count": 4, "from": "Ikeuchi, Masahiko", "to": "Fushimi, Keiji", "weight": 1}, {"Count": 1, "from": "Ikeuchi, Masahiko", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 2, "from": "Ikeuchi, Masahiko", "to": "Maeda, Kaisei", "weight": 1}, {"Count": 2, "from": "Ikeuchi, Masahiko", "to": "Nakajima, Takahiro", "weight": 1}, {"Count": 3, "from": "Ikeuchi, Masahiko", "to": "Narikawa, Rei", "weight": 1}, {"Count": 4, "from": "Ikeuchi, Masahiko", "to": "Ni-Ni-Win", "weight": 1}, {"Count": 1, "from": "Ikeuchi, Masahiko", "to": "Sato, Moritoshi", "weight": 1}, {"Count": 1, "from": "Ikeuchi, Masahiko", "to": "Kanesaki, Yu", "weight": 1}, {"Count": 1, "from": "Narikawa, Rei", "to": "Aono, Yuki", "weight": 1}, {"Count": 2, "from": "Narikawa, Rei", "to": "Fushimi, Keiji", "weight": 1}, {"Count": 1, "from": "Narikawa, Rei", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 1, "from": "Narikawa, Rei", "to": "Nakajima, Takahiro", "weight": 1}, {"Count": 1, "from": "Narikawa, Rei", "to": "Kanesaki, Yu", "weight": 1}, {"Count": 2, "from": "Narikawa, Rei", "to": "Maeda, Kaisei", "weight": 1}, {"Count": 2, "from": "Narikawa, Rei", "to": "Ni-Ni-Win", "weight": 1}, {"Count": 1, "from": "Narikawa, Rei", "to": "Sato, Moritoshi", "weight": 1}, {"Count": 1, "from": "Yamamoto, Haruki", "to": "Fujita, Yuichi", "weight": 1}, {"Count": 1, "from": "Yamamoto, Haruki", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 1, "from": "Yamamoto, Haruki", "to": "Tsuzuki, Yuki", "weight": 1}, {"Count": 2, "from": "Ifuku, Kentaro", "to": "Inoue-Kashino, Natsuko", "weight": 1}, {"Count": 1, "from": "Ifuku, Kentaro", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 2, "from": "Ifuku, Kentaro", "to": "Shinzawa-Itoh, Kyoko", "weight": 1}, {"Count": 1, "from": "Ifuku, Kentaro", "to": "Yonekura, Koji", "weight": 1}, {"Count": 2, "from": "Ifuku, Kentaro", "to": "Yamashita, Eiki", "weight": 1}, {"Count": 2, "from": "Fujita, Yuichi", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 2, "from": "Fujita, Yuichi", "to": "Tsuzuki, Yuki", "weight": 1}, {"Count": 2, "from": "Inoue-Kashino, Natsuko", "to": "Shinzawa-Itoh, Kyoko", "weight": 1}, {"Count": 1, "from": "Inoue-Kashino, Natsuko", "to": "Yonekura, Koji", "weight": 1}, {"Count": 2, "from": "Inoue-Kashino, Natsuko", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 2, "from": "Inoue-Kashino, Natsuko", "to": "Yamashita, Eiki", "weight": 1}, {"Count": 1, "from": "Kurashov, Vasily", "to": "Brudvig, Gary W", "weight": 1}, {"Count": 2, "from": "Kurashov, Vasily", "to": "Golbeck, John H", "weight": 1}, {"Count": 1, "from": "Kurashov, Vasily", "to": "Gisriel, Christopher J", "weight": 1}, {"Count": 2, "from": "Kurashov, Vasily", "to": "Ho, Ming-Yang", "weight": 1}, {"Count": 2, "from": "Kurashov, Vasily", "to": "Shen, Gaozhong", "weight": 1}, {"Count": 1, "from": "Golbeck, John H", "to": "Brudvig, Gary W", "weight": 1}, {"Count": 1, "from": "Golbeck, John H", "to": "Gisriel, Christopher J", "weight": 1}, {"Count": 2, "from": "Golbeck, John H", "to": "Ho, Ming-Yang", "weight": 1}, {"Count": 2, "from": "Golbeck, John H", "to": "Shen, Gaozhong", "weight": 1}, {"Count": 1, "from": "Blankenship, Robert E", "to": "Wolf, Benjamin M", "weight": 1}, {"Count": 1, "from": "Blankenship, Robert E", "to": "Chen, Min", "weight": 1}, {"Count": 1, "from": "Ho, Ming-Yang", "to": "Brudvig, Gary W", "weight": 1}, {"Count": 1, "from": "Ho, Ming-Yang", "to": "Gisriel, Christopher J", "weight": 1}, {"Count": 3, "from": "Ho, Ming-Yang", "to": "Shen, Gaozhong", "weight": 1}, {"Count": 2, "from": "Tsuzuki, Yuki", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 2, "from": "Nakajima, Takahiro", "to": "Aono, Yuki", "weight": 1}, {"Count": 1, "from": "Nakajima, Takahiro", "to": "Fushimi, Keiji", "weight": 1}, {"Count": 1, "from": "Nakajima, Takahiro", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 2, "from": "Nakajima, Takahiro", "to": "Ni-Ni-Win", "weight": 1}, {"Count": 2, "from": "Nakajima, Takahiro", "to": "Sato, Moritoshi", "weight": 1}, {"Count": 2, "from": "Zhang, Zhong-Chun", "to": "Chen, Min", "weight": 1}, {"Count": 1, "from": "Zhang, Zhong-Chun", "to": "Li, Zheng-Ke", "weight": 1}, {"Count": 2, "from": "Zhang, Zhong-Chun", "to": "Qiu, Bao-Sheng", "weight": 1}, {"Count": 1, "from": "Zhang, Zhong-Chun", "to": "Yin, Yan-Chao", "weight": 1}, {"Count": 2, "from": "Brudvig, Gary W", "to": "Gisriel, Christopher J", "weight": 1}, {"Count": 1, "from": "Brudvig, Gary W", "to": "Shen, Gaozhong", "weight": 1}, {"Count": 1, "from": "Petrova, Anastasia A", "to": "Vishnevskaya, Anna I", "weight": 1}, {"Count": 2, "from": "Willows, Robert D", "to": "Chen, Min", "weight": 1}, {"Count": 2, "from": "Shinzawa-Itoh, Kyoko", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 1, "from": "Shinzawa-Itoh, Kyoko", "to": "Yonekura, Koji", "weight": 1}, {"Count": 2, "from": "Shinzawa-Itoh, Kyoko", "to": "Yamashita, Eiki", "weight": 1}, {"Count": 1, "from": "Fushimi, Keiji", "to": "Aono, Yuki", "weight": 1}, {"Count": 1, "from": "Fushimi, Keiji", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 1, "from": "Fushimi, Keiji", "to": "Maeda, Kaisei", "weight": 1}, {"Count": 4, "from": "Fushimi, Keiji", "to": "Ni-Ni-Win", "weight": 1}, {"Count": 2, "from": "Fushimi, Keiji", "to": "Sato, Moritoshi", "weight": 1}, {"Count": 1, "from": "Aono, Yuki", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 2, "from": "Aono, Yuki", "to": "Ni-Ni-Win", "weight": 1}, {"Count": 2, "from": "Aono, Yuki", "to": "Sato, Moritoshi", "weight": 1}, {"Count": 2, "from": "Qiu, Bao-Sheng", "to": "Chen, Min", "weight": 1}, {"Count": 2, "from": "Qiu, Bao-Sheng", "to": "Li, Zheng-Ke", "weight": 1}, {"Count": 2, "from": "Qiu, Bao-Sheng", "to": "Yin, Yan-Chao", "weight": 1}, {"Count": 1, "from": "Sato, Moritoshi", "to": "Itoh, Shigeru", "weight": 1}, {"Count": 2, "from": "Sato, Moritoshi", "to": "Ni-Ni-Win", "weight": 1}, {"Count": 1, "from": "Itoh, Shigeru", "to": "Ni-Ni-Win", "weight": 1}, {"Count": 1, "from": "Itoh, Shigeru", "to": "Yamashita, Eiki", "weight": 1}, {"Count": 1, "from": "Itoh, Shigeru", "to": "Yonekura, Koji", "weight": 1}, {"Count": 2, "from": "Li, Zheng-Ke", "to": "Chen, Min", "weight": 1}, {"Count": 2, "from": "Li, Zheng-Ke", "to": "Yin, Yan-Chao", "weight": 1}, {"Count": 1, "from": "Miller, Scott R", "to": "Kanesaki, Yu", "weight": 1}, {"Count": 2, "from": "Chen, Min", "to": "Yin, Yan-Chao", "weight": 1}, {"Count": 1, "from": "Yonekura, Koji", "to": "Yamashita, Eiki", "weight": 1}, {"Count": 1, "from": "Shen, Gaozhong", "to": "Gisriel, Christopher J", "weight": 1}, {"Count": 1, "from": "Maeda, Kaisei", "to": "Kanesaki, Yu", "weight": 1}, {"Count": 1, "from": "Maeda, Kaisei", "to": "Ni-Ni-Win", "weight": 1}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
