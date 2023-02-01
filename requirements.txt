@@ -3,7 +3,7 @@ streamlit
 numpy
 stvis==0.0.1
 scholarly==1.4.0
-requests==2.11.1
+requests
 networkx==2.5
 plotly
 streamlit_aggrid
