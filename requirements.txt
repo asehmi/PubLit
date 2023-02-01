@@ -9,5 +9,4 @@ streamlit_aggrid
 pyvis==0.1.9
 pandas
 Bio
-stqdm==0.0.4
 openai

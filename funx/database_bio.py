@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-from stqdm import stqdm
-
 from Bio import Entrez, Medline
 from numpy import empty
 
@@ -15,7 +13,7 @@ def get_pub(val,keyword):
     batch_size = 100
     batches = [ids[x: x + 100] for x in range(0, len(ids), batch_size)]   
     record_list = []
-    for batch in stqdm(batches):
+    for batch in batches:
         handle = Entrez.efetch(db = "pubmed", id = batch, rettype = "medline", retmode = "text")
         records = Medline.parse(handle)
         record_list.extend(list(records))
