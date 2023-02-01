@@ -66,10 +66,11 @@ if keyword :
                     fig2 = plot_utils.plot_top_journals(pubdf)
                     fig3 = plot_utils.top_keyworkds(pubdf)
                     fig4 = plot_utils.year_journal_trend(pubdf)
-                    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Top Author(s)", 
+                    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Top Author(s)",
+                                                    "Journal(s) Trend", 
+                                                    "Top Keyword(s)", 
                                                     "Top Journal(s)",
-                                                    "Top Keyword(s)",
-                                                    "Journal(s) Trend",
+                                                    # "Journal(s) Trend",
                                                     "Author(s) Network"])
                     tab1.plotly_chart(fig, theme='streamlit')
                     tab2.plotly_chart(fig4, theme='streamlit')          
