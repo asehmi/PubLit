@@ -33,7 +33,7 @@ def grid_table(df):
                 gridOptions = gridOptions, 
                 # enable_enterprise_modules = True,
                 width = 500, height= 400,
-                theme = "balham",
+                # theme = "balham",
                 update_mode = GridUpdateMode.SELECTION_CHANGED,
                 )
     df = grid_response['data']
