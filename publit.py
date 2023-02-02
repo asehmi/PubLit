@@ -23,11 +23,14 @@ def generate_response(token, prompt , output, temparature):
 st.set_page_config(layout="wide",
                 page_title = "PubLit 📑 - ✨ Scientific searches & insights all-in-one place.")
 st_cont = st.sidebar.container()
-st.sidebar.title("📖 PubLit ")
-st.sidebar.markdown("✨ Scientific searches & insights all-in-one place.")
+st.sidebar.title("📖 PubLit AI ")
+st.info('''
+        ✨ Scientific searches & insights all-in-one place  🆕 AI based summarization 
+        🛢arXiv database support coming soon
+        ''')
 
 
-st.info("Search scientific publications based on keywords.", icon="🔎")
+st.sidebar.write("🔎 Search scientific publications based on keywords.")
 keyword = st.sidebar.text_input(label = ":blue[Search your queries below] ", 
                                 placeholder= "Chlorophyll f")
 if keyword :    
