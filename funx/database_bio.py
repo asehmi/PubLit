@@ -26,6 +26,10 @@ def get_pub(val,keyword):
                 # Keep the ones to display on table
     dic = {'Published on': publication_data["DP"],  'Title' : publication_data['TI'], 'Authors' : publication_data["AU"],'PubchemID': publication_data["PMID"], "DOI":publication_data["LID"] }
     df = pd.DataFrame(dic)
+    # Remove '[doi]' from each row of the 'DOI' column
+    df['DOI'] = df['DOI'].str.replace(' \[doi\]', '')
+    # Add 'https://doi.org/' in front of each row of the 'DOI' column
+    df['DOI'] = 'https://doi.org/' + df['DOI']
     return publication_data,df
 
 # get idea of max publication with the keyword

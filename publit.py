@@ -110,6 +110,9 @@ if keyword :
                 with st.form("AI support"):
                     st.subheader(Title[x])
                     st.markdown(' , '.join(auth[x]))
+                    # l = 'https://doi.org/' + match_df['LID'].str.replace(' \[doi\]', '')
+                    # st.markdown(l.to_list())
+                    # match_df["SO"]
                     st.markdown('Published on: ' +  Journal[x] )
                     st.info(Abstract[x])                   
                     opt = st.radio(":blue[🆕 OpenAI Support ✨]",
