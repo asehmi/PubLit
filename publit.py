@@ -3,52 +3,53 @@ import streamlit as st
 import json
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
-# Custom functions implementation
+# Importing custom modules
 from funx import custom_funx, database_bio, plot_utils
-import openai
 
-def generate_response(token, prompt , output, temparature):
-    openai.api_key = token
-    response = openai.Completion.create(
-                engine = "text-davinci-003",
-                prompt = prompt,
-                max_tokens = output,
-                temperature = temparature,
-            )
-            # Print the generated summary
-    res = response["choices"][0]["text"]
-    return res
 
 # Main App 
-st.set_page_config(layout="wide",
-                page_title = "PubLit 📑 - ✨ Scientific searches & insights all-in-one place.")
-st_cont = st.sidebar.container()
+st.set_page_config(layout="wide",page_title = "PubLit AI 📑 - ✨ Scientific searches & insights all-in-one place.")
 st.sidebar.title("📖 PubLit AI ")
 st.info('''
         ✨ Scientific searches & insights all-in-one place  🆕 AI based summarization 
         🛢arXiv database support coming soon
         ''')
+with st.sidebar:
+    st.markdown(''' 🔎 Search scientific publications based on keywords. ''')
+    # Database
+    # selected_datbase = st.radio(label = ":blue[Select database]", options =["⚛ PubMed", "ㄨArXiv"], horizontal=True)
+    selected_datbase = "⚛ PubMed"
+    # Seach / keywords Query 
+    keyword = st.text_input(label = ":blue[Search your queries below] ", 
+                                placeholder= "Example : Chlorophyll f", 
+                                # on_change = load_button_off
+                                )
 
-
-st.sidebar.write("🔎 Search scientific publications based on keywords.")
-keyword = st.sidebar.text_input(label = ":blue[Search your queries below] ", 
-                                placeholder= "Chlorophyll f")
+# When Keyword / Search query is present
 if keyword :    
     with st.spinner("Searching query {}....".format(keyword)):
-    # Obtain the maximum publications
-        max_pub = database_bio.avail_pub(keyword) 
+        if selected_datbase == "⚛ PubMed" :
+            # Obtain the maximum publications available
+            max_pub = database_bio.avail_pub(keyword)           
+            # Total hits can be deprecated 
+            if int(max_pub) > 0:               
+                st.sidebar.code("Total hits: "+max_pub)  
+        else: # Database ArXiv
+            # Impement search for keywords less than 10
+            max_pub = 50 
     # Default Serach Quantity Choosen from app
     if round(int(max_pub)/2) > 50:
         nSearchQuant = 50
     else:
         nSearchQuant = round(int(max_pub)/2)  
 
-    if int(max_pub) > 0:
-        st.sidebar.code("Total hits: "+max_pub)   
+    if int(max_pub) > 0:  
         val = st.sidebar.number_input(label = ":blue[Number of Publications to Load]", min_value = 0, max_value = int(max_pub),value = nSearchQuant )       
-        search_val = st.sidebar.checkbox("⏳ Start Loading",
-                                        value = False,
-                                        help= "The App uses PubMed database to retrieve publications.")
+        search_val = st.sidebar.checkbox("⏳ Start Loading", value = False,
+                                        help = "The App uses PubMed database to retrieve publications.")
+        # search_val = st.sidebar.button("⏳ Start Loading", 
+        #                                 help = "The App uses PubMed database to retrieve publications.")
+        # search_val
         # Search all the publications
         if search_val:
             with st.spinner("Loading publication..."):
@@ -156,7 +157,7 @@ if keyword :
                     submit_btn = st.form_submit_button("Submit",
                                     type = "primary")
                     if submit_btn :
-                        res = generate_response(token = secret, 
+                        res = custom_funx.generate_response(token = secret, 
                                                 prompt = fprompt , 
                                                 output = output_size,
                                                 temparature = temp)
@@ -175,6 +176,8 @@ if keyword :
     else:
         st.error("Sorry!Your keyword(s) doesn't contain related publications.")
 
+else: # When no keyword is present in the search box widget
+    st.warning("Enter your query within the search box present in the sidebar.")
 
 st.sidebar.markdown(
     '''
