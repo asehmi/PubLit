@@ -4,16 +4,35 @@ import json
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 # Importing custom modules
-from funx import custom_funx, database_bio, plot_utils
+from utils import custom_funx, database_bio, plot_utils
+from utils.feedback import feedback, embedTweet
+import time
+from streamlit.components.v1 import html
 
-
+def load_started():
+    st.session_state.load_pub = True
+def change_load_status():
+    st.session_state.load_pub = False
 # Main App 
-st.set_page_config(layout="wide",page_title = "PubLit AI 📑 - ✨ Scientific searches & insights all-in-one place.")
+st.set_page_config(layout="wide",page_title = "📑 PubLit AI - ✨ Scientific searches & insights all-in-one place.")
+
+# Initiate SessionState
+if 'load_pub' not in st.session_state:
+    st.session_state['load_pub'] = False
+if 'load_button_type' not in st.session_state:
+    st.session_state.load_button_type = 'secondary'
+
+if st.session_state['load_pub']:
+    st.session_state.load_button_type = 'secondary'
+else:
+    st.session_state.load_button_type = 'primary'
+
 st.sidebar.title("📖 PubLit AI ")
 st.info('''
         ✨ Scientific searches & insights all-in-one place  🆕 AI based summarization 
         🛢arXiv database support coming soon
         ''')
+
 with st.sidebar:
     st.markdown(''' 🔎 Search scientific publications based on keywords. ''')
     # Database
@@ -22,7 +41,7 @@ with st.sidebar:
     # Seach / keywords Query 
     keyword = st.text_input(label = ":blue[Search your queries below] ", 
                                 placeholder= "Example : Chlorophyll f", 
-                                # on_change = load_button_off
+                                on_change = change_load_status
                                 )
 
 # When Keyword / Search query is present
@@ -45,47 +64,55 @@ if keyword :
 
     if int(max_pub) > 0:  
         val = st.sidebar.number_input(label = ":blue[Number of Publications to Load]", min_value = 0, max_value = int(max_pub),value = nSearchQuant )       
-        search_val = st.sidebar.checkbox("⏳ Start Loading", value = False,
+        # search_val = st.sidebar.checkbox("⏳ Start Loading", value = st.session_state.load_pub,
+                                        # help = "The App uses PubMed database to retrieve publications.")
+        search_val = st.sidebar.button("⏳ Load Publications", on_click=load_started,type = st.session_state.load_button_type,
                                         help = "The App uses PubMed database to retrieve publications.")
-        # search_val = st.sidebar.button("⏳ Start Loading", 
-        #                                 help = "The App uses PubMed database to retrieve publications.")
-        # search_val
         # Search all the publications
-        if search_val:
+        if search_val or st.session_state.load_pub:
             with st.spinner("Loading publication..."):
                 pubdf , df = database_bio.get_pub(val,keyword)  
-                with st.expander(label=f"{keyword}: Search Results", expanded=True):
-                    res,sel = plot_utils.grid_table(df)   
-                    csv = custom_funx.convert_df(df)
-                    st.download_button(
-                        label ="📋 Download Table",
-                        data = csv,
-                        file_name = keyword+'.csv',
-                        mime ='text/csv',
-                    ) 
-            if st.sidebar.checkbox("📊 Visualize",value = False):
-            # Figures            
-                with st.expander("Visualize", expanded=True):
-                    fig = plot_utils.plot_top_authors(pubdf)
-                    fig2 = plot_utils.plot_top_journals(pubdf)
-                    fig3 = plot_utils.top_keyworkds(pubdf)
-                    fig4 = plot_utils.year_journal_trend(pubdf)
-                    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Top Author(s)",
-                                                    "Journal(s) Trend", 
-                                                    "Top Journal(s)",
-                                                    "Top Keyword(s)", 
-                                                    "Author(s) Network"])
-                    tab1.plotly_chart(fig, theme='streamlit')
-                    tab2.plotly_chart(fig4, theme='streamlit')          
-                    tab3.plotly_chart(fig2, theme='streamlit')
-                    with tab5:
-                        g,names = plot_utils.plot_connection(pubdf)
-                    try:
-                        tab4.plotly_chart(fig3, theme='streamlit') 
-                    except:
-                        tab4.error('Keywords Stats Unavailable')
-                
+                with st.expander(label=f"Search Results : {keyword}", expanded=True):
+                    t1 , t2 = st.tabs(["Publications", "Visualize"])
+                    # Tab with Data Frame
+                    with t1:
+                        res,sel = custom_funx.grid_table(df)  
+                        # Button to dowload table
+                        # Need some pause, because AgGrid takes time to dump data
+                        time.sleep(0.5)
+                        csv = custom_funx.convert_df(df)
+                        st.download_button(
+                            label ="📋 Download Table",
+                            data = csv,
+                            file_name = keyword+'.csv',
+                            mime ='text/csv',
+                        )
+                        info_box_sel = st.empty()
+                    
+                    # t2 -> Tab with Figures            
+                    with t2:
+                        fig = plot_utils.plot_top_authors(pubdf)
+                        fig2 = plot_utils.plot_top_journals(pubdf)
+                        fig3 = plot_utils.top_keyworkds(pubdf)
+                        fig4 = plot_utils.year_journal_trend(pubdf)
+                        tab1, tab2, tab3, tab4, tab5 = st.tabs(["Top Author(s)",
+                                                        "Journal(s) Trend", 
+                                                        "Top Journal(s)",
+                                                        "Top Keyword(s)", 
+                                                        "Author(s) Network"])
+                        tab1.plotly_chart(fig, theme='streamlit')
+                        tab2.plotly_chart(fig4, theme='streamlit')          
+                        tab3.plotly_chart(fig2, theme='streamlit')
+                        with tab5:
+                            g,names = plot_utils.plot_connection(pubdf)
+                        try:
+                            tab4.plotly_chart(fig3, theme='streamlit') 
+                        except:
+                            tab4.error('Keywords Stats Unavailable')
+            
+            # Any selection on the AgGrid data table   
             if sel:
+                # This can be rewritten for better implementation
                 ids = [] 
                 nID = len(sel)
                 for x in range(nID):
@@ -110,8 +137,8 @@ if keyword :
                     st.sidebar.download_button(label = '🗞 Download Selected Content',  
                                     data = res,file_name = str(pmid[x])+'.txt',
                                     mime='text/csv',
-                                    help = Journal[x] + " : [click to download].")   
-                with st.form("AI support"):
+                                    help = 'Content of:' + Journal[x] + " : [click to download].")   
+                with st.form("ai_support"):
                     st.subheader(Title[x])
                     st.markdown(' , '.join(auth[x]))
                     # l = 'https://doi.org/' + match_df['LID'].str.replace(' \[doi\]', '')
@@ -143,9 +170,14 @@ if keyword :
                         
                     )
                     
-                    secret = st.text_input(":blue[Open AI's API Secret]",
+                    secret = st.text_input(":blue[OpenAI API Key]",
                                     type="password",
-                                    help = "Your API key is NOT stored in any form. However, highly recommended to delete once used."
+                                    # value = st.session_state.user_secret,
+                                    placeholder="Paste your OpenAI API key here (sk-...)",
+                                    help = '''You can get your API key from https://platform.openai.com/account/api-keys.
+                                            Your API key is NOT stored in any form. 
+                                            However, highly recommended to delete once used.
+                                            '''
                                     )
                     temp = st.slider("Relevance",value = 0.7,min_value=0.0,max_value=1.0,step=0.1 )
                     output_size = st.slider("Output Length",value=1024, min_value=64, max_value=4000)
@@ -157,31 +189,60 @@ if keyword :
                     submit_btn = st.form_submit_button("Submit",
                                     type = "primary")
                     if submit_btn :
-                        res = custom_funx.generate_response(token = secret, 
-                                                prompt = fprompt , 
-                                                output = output_size,
-                                                temparature = temp)
-                        st.markdown('''------------''')
-                        st.markdown(res)
-                        st.warning('''
-                                   Disclaimer: Results are AI generated by the openAI model, 
-                                   cannot guarantee scientific relevance in all instance.
-                                   Be cautious in further usage.
-                                   ''', icon="🤖"
+                        empty_info = st.empty()
+                        
+                        if not secret or not secret.startswith('sk-'):
+                            st.warning("Invalid : OpenAI API key not found.")
+                            st.markdown(
+                                    "#### Usage:\n"
+                                    "1. Get your [OpenAI API key](https://platform.openai.com/account/api-keys) from here.\n"
+                                    "2. Paste your OpenAI API key above in the `OpenAI API Key` text box.\n"
+                                    "3. Change the parameters based on your needs.\n"
+                                    "4. Learn more about the parameters in this [blog](https://medium.com/@avra42/summarizing-scientific-articles-with-openai-and-streamlit-fdee12aa1a2b)." 
+    )
                             
-                        )
+                        else:
+                            empty_info.text("🤖 AI magic initiated 🪄 ...") 
+                            with st.spinner("Performing `{}` method.".format(opt)):
+                                res = custom_funx.generate_response(token = secret, 
+                                                    prompt = fprompt , 
+                                                    output = output_size,
+                                                    temparature = temp)
+                            st.markdown('''------------''')
+                            st.markdown(res)
+                            st.warning('''
+                                    Disclaimer: Results are AI generated by the openAI model, 
+                                    cannot guarantee scientific relevance in all instance.
+                                    Be cautious in further usage.
+                                    ''', icon="🤖"
+                                
+                            )
+                            empty_info.empty()
             else:
-                st.info("Select any article to know more.",icon="ℹ️")
-                                                      
+                info_box_sel.info("Select any publication to know more.",icon="ℹ️")                                                  
     else:
         st.error("Sorry!Your keyword(s) doesn't contain related publications.")
 
 else: # When no keyword is present in the search box widget
-    st.warning("Enter your query within the search box present in the sidebar.")
+    st.text("⬅️ Search your query using the search box present in the sidebar."
+            )
 
-st.sidebar.markdown(
-    '''
-    --------------------
-    Incase of feedbacks, you can DM me over [![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?style=for-the-badge&logo=Twitter&logoColor=white)](https://www.twitter.com/Avra_b) or write to me at : avrab.yt@gmail.com
-    '''
-)
+    st.sidebar.markdown(
+        '''
+        --------------------  
+        Incase of feedbacks, you can DM me over [![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?style=for-the-badge&logo=Twitter&logoColor=white)](https://www.twitter.com/Avra_b) or write to me at : avrab.yt@gmail.com
+        '''
+    )
+    tweet_url = "https://twitter.com/Avra_b/status/1620606960709300224?s=20&t=34ICyDyZIx6RE0HxB1Lhlw"
+    st.markdown("#### For a quick-start refer to my tweet [here]({}).".format(tweet_url))
+    res = embedTweet(tweet_url=tweet_url)
+    html(res,height=700)
+with st.sidebar:
+    st.markdown('')
+    emailID = st.text_input(label=":blue[Notify me with future release.]",
+                        placeholder="Please enter your email ID here.")
+    if st.button("📩 Subscribe"):
+        if len(emailID) > 0:
+            feedback(email = emailID, sheetname = "PubLitAI")
+# button(username="AvraCodes", floating=True, bg_color="#BCD1E6", width=220)
+

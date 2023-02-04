@@ -1,7 +1,4 @@
 import streamlit as st
-from st_aggrid import AgGrid,GridUpdateMode
-from st_aggrid.grid_options_builder import GridOptionsBuilder
-
 from collections import Counter
 from itertools import combinations
 from stvis import pv_static
@@ -10,39 +7,9 @@ from pyvis import network as net
 import networkx as nx
 import plotly.express as px
 import pandas as pd
-from numpy import empty
-
-# Ag-Grid Implementation
-def grid_table(df):
-    gb = GridOptionsBuilder.from_dataframe(df)
-
-    # gb.configure_pagination(enabled=True, 
-    #                         paginationAutoPageSize=True, 
-    #                         paginationPageSize=5)
-    gb.configure_side_bar()
-    gb.configure_selection('single', use_checkbox=True)
-    gb.configure_default_column(groupable=True, 
-                                value = True, 
-                                enableRowGroup=True, 
-                                editable= True,
-                                tooltipField = 'Title'
-                                )
-    gb.configure_pagination(True,paginationPageSize = 5)
-    gridOptions = gb.build()
-    grid_response = AgGrid(df, 
-                gridOptions = gridOptions, 
-                # enable_enterprise_modules = True,
-                width = 500, height= 400,
-                # theme = "balham",
-                update_mode = GridUpdateMode.SELECTION_CHANGED,
-                )
-    df = grid_response['data']
-    selected_rows = grid_response["selected_rows"]
-    return df,selected_rows
 
 # Top Authors
 def plot_top_authors(pubdf):      
-    # n_author = st.sidebar.slider(label = "Contributing Authors", min_value = 0, max_value = 100, value = 5)
     n_author = 10
     authors_flat = [author for authors in list(pubdf["FAU"].dropna())for author in authors]
     top10authors = pd.DataFrame.from_records(
@@ -52,16 +19,12 @@ def plot_top_authors(pubdf):
                     data_frame = top10authors,
                     x = "Name", y = "Count",
                     title = "Top {} Contributing authors".format(n_author),
-                    color = "Name",
-                    # color_discrete_sequence = px.colors.qualitative.Pastel2,    
-                                           
-                )  
-    # fig = st.bar_chart(data = top10authors,x = "Name", y = "Count",)  
+                    color = "Name",                                            
+                )   
     return fig 
 
 # Top Journals with the key words
 def plot_top_journals(pdf):
-    # By default 10 journals are choosen , Need fix
     top_journals = pd.DataFrame.from_records(
             Counter(pdf["TA"]).most_common(10),
             columns=["Journal", "Count"],
@@ -70,7 +33,6 @@ def plot_top_journals(pdf):
                 names = "Journal", 
                 values = "Count", 
                 title = "Top Journals",
-                #  color_discrete_sequence = px.colors.qualitative.Pastel2
                 )
     return fig
 
@@ -92,7 +54,6 @@ def top_keyworkds(pdf):
                         x = "Count", y = "Keyword",
                         title = "Top Keywords related to the articles",
                         color = "Keyword",
-                        # color_discrete_sequence = px.colors.qualitative.Pastel2,                                                
                     )
     # Quick bug fix, Not okay                  
     else:
@@ -105,7 +66,6 @@ def year_journal_trend(pdf):
     yearly.columns = ["Year", "Count"]
     fig = px.scatter(yearly, x="Year", y="Count",
 	            size="Count", color="Year",
-                # color_discrete_sequence = px.colors.qualitative.Pastel2,
                 hover_name = "Year", log_x=True, size_max=60, title= "Yearly trends")
     return fig
 
@@ -135,9 +95,7 @@ def plot_connection(pdf):
         # bgcolor='#222222',
         notebook = False
         )
-    #bgcolor='#222222'
     g.from_nx(G_50,default_node_size = 15)
-    pv_static(g)
-    
+    pv_static(g)   
     return g,top50authors    
 

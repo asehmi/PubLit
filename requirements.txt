@@ -1,5 +1,4 @@
 streamlit
-numpy
 stvis==0.0.1
 scholarly==1.4.0
 requests
@@ -10,3 +9,4 @@ pyvis==0.1.9
 pandas
 Bio
 openai
+gspread
