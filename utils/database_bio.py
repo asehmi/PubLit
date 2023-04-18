@@ -5,7 +5,7 @@ from Bio import Entrez, Medline
 # Change this email to your email address
 Entrez.email = "A.N.Other@example.com"
 
-@st.experimental_memo(suppress_st_warning=True,show_spinner=False)
+@st.cache_data
 def get_pub(val, keyword):
     """
     This function retrieves the publication data from Pubmed database by searching the keyword.
@@ -52,7 +52,7 @@ def get_pub(val, keyword):
 
 
 # get idea of max publication with the keyword
-@st.cache(suppress_st_warning=True,show_spinner=False)
+@st.cache_data
 def avail_pub(keyword):
     """
     This function takes a keyword as input and returns the number of available publications in pubmed database
