@@ -4,7 +4,7 @@ from st_aggrid import AgGrid,GridUpdateMode, JsCode
 from st_aggrid.grid_options_builder import GridOptionsBuilder
 
 # Convert Datframe for saving
-@st.experimental_memo
+@st.cache_data
 def convert_df(df):
     return df.to_csv().encode('utf-8')
 
